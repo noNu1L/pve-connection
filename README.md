@@ -49,11 +49,10 @@ services:
     restart: unless-stopped
     ports:
       - "80:8080"
-    environment:
-      - TZ=Asia/Shanghai
-      - JAVA_OPTS=-Xms512M -Xmx1024M -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
+    entrypoint:
+      java -jar -Xms1024M -XX:MetaspaceSize=1024m  -XX:MaxMetaspaceSize=512m -Xss2m /pve-connection-helper-1.0.jar
     volumes:
-      - ./pve-connection-helper-1.0.jar:/pve-connection-helper.jar
+      - ./pve-connection-helper-1.0.jar:/pve-connection-helper-1.0.jar
       - ./pve-connection-helper.db:/pve-connection-helper.db
 ```
 
