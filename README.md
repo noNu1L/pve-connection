@@ -24,53 +24,18 @@
 
 ## 📸 界面预览
 
-<!-- 如果有截图，可以添加在这里 -->
-<!-- ![主界面](docs/images/screenshot.png) -->
+![img.png](https://github.com/noNu1L/pve-connection-helper/blob/master/document/images/v1.0.0.png?raw=true)
 
-## 🏛️ 系统架构
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                      浏览器端                            │
-│              (Vue 3 + Element Plus)                     │
-└────────────────────┬────────────────────────────────────┘
-                     │ HTTP/REST API
-                     ↓
-┌─────────────────────────────────────────────────────────┐
-│                   PVE Tool 后端                          │
-│            (Spring Boot 3 + SQLite)                     │
-├─────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │ 配置管理     │  │ 虚拟机服务   │  │ 宿主机服务   │  │
-│  │ ConfigService│  │ VmService    │  │ HostService  │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │         PVE API 客户端 (PveClientService)        │  │
-│  └──────────────────────────────────────────────────┘  │
-└────────────────────┬────────────────────────────────────┘
-                     │ Proxmox VE API
-                     ↓
-┌─────────────────────────────────────────────────────────┐
-│              Proxmox VE 服务器集群                       │
-│         (宿主机 + KVM/LXC 虚拟机)                        │
-└─────────────────────────────────────────────────────────┘
-```
-
-## 🚀 快速启动
-
-### Docker 部署（推荐）
-
-使用 Docker Compose 可以快速部署应用，无需配置 Java 环境。
+## 🚀 Docker 部署
+使用 Docker Compose 部署应用
 
 #### 1. 准备文件
-
 创建项目目录并准备以下文件：
-
 ```bash
 pve-connection-helper/
 ├── docker-compose.yml
 ├── pve-connection-helper-1.0.jar      # 应用程序 JAR 包
-└── pve-connection-helper.db           # 数据库文件（可选，首次运行会自动创建）
+└── pve-connection-helper.db           # 数据库文件
 ```
 
 #### 2. 创建 docker-compose.yml
@@ -88,8 +53,8 @@ services:
       - TZ=Asia/Shanghai
       - JAVA_OPTS=-Xms512M -Xmx1024M -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m
     volumes:
-      - ./pve-connection-helper-1.0.jar:/app/pve-connection-helper.jar
-      - ./pve-connection-helper.db:/app/pve-connection-helper.db
+      - ./pve-connection-helper-1.0.jar:/pve-connection-helper.jar
+      - ./pve-connection-helper.db:/pve-connection-helper.db
 ```
 
 #### 3. 启动服务
