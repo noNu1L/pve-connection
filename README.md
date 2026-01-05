@@ -24,7 +24,7 @@
 
 ## 📸 界面预览
 
-![img.png](https://github.com/noNu1L/pve-connection-helper/blob/master/document/images/v1.0.0.png?raw=true)
+![img.png](https://github.com/noNu1L/pve-connection-helper/blob/main/document/images/v1.0.0.png?raw=true)
 
 ## 🚀 Docker 部署
 使用 Docker Compose 部署应用
@@ -76,5 +76,5 @@ docker compose down
 
 ## 🔒 安全建议
 
-- ⚠️ **密码使用明文储存，请执行进行安全管理**
+- ⚠️ **密码使用明文储存，请自行进行安全管理**
 
