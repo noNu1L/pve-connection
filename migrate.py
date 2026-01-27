@@ -7,7 +7,8 @@ import os
 import sys
 
 DB_FILE = "pve-connection-helper.db"
-JSON_FILE = "config.json"
+DATA_DIR = "data"
+JSON_FILE = os.path.join(DATA_DIR, "config.json")
 
 
 def migrate():
@@ -108,6 +109,10 @@ def migrate():
 
     # 设置 nextConnectionId
     data["nextConnectionId"] = max_id + 1
+
+    # 确保 data 目录存在
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
 
     # 写入 JSON
     with open(JSON_FILE, "w", encoding="utf-8") as f:

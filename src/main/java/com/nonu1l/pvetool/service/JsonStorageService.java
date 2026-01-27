@@ -18,25 +18,33 @@ import java.util.stream.Collectors;
 @Service
 public class JsonStorageService {
 
+    private static final String CONFIG_DIR = "data";
     private static final String CONFIG_FILE = "config.json";
     private final ObjectMapper objectMapper;
     private StorageData data;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final File configFile;
 
     public JsonStorageService() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        // 确保 data 目录存在
+        File dataDir = new File(CONFIG_DIR);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+        this.configFile = new File(dataDir, CONFIG_FILE);
         this.data = load();
     }
 
     private StorageData load() {
-        File file = new File(CONFIG_FILE);
-        if (!file.exists()) {
-            log.info("配置文件不存在，创建默认配置");
+        if (!configFile.exists()) {
+            log.info("配置文件不存在，创建默认配置: {}", configFile.getAbsolutePath());
             return new StorageData();
         }
         try {
-            return objectMapper.readValue(file, StorageData.class);
+            return objectMapper.readValue(configFile, StorageData.class);
         } catch (IOException e) {
             log.error("读取配置文件失败", e);
             return new StorageData();
@@ -45,7 +53,7 @@ public class JsonStorageService {
 
     private void save() {
         try {
-            objectMapper.writeValue(new File(CONFIG_FILE), data);
+            objectMapper.writeValue(configFile, data);
         } catch (IOException e) {
             log.error("保存配置文件失败", e);
         }
