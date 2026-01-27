@@ -1,7 +1,7 @@
 package com.nonu1l.pvetool.controller;
 
-import com.nonu1l.pvetool.entity.HostConnection;
-import com.nonu1l.pvetool.entity.VmConnection;
+import com.nonu1l.pvetool.model.HostConnection;
+import com.nonu1l.pvetool.model.VmConnection;
 import com.nonu1l.pvetool.service.HostService;
 import com.nonu1l.pvetool.service.PveClientService;
 import com.nonu1l.pvetool.service.PveDataService;
@@ -116,6 +116,7 @@ public class VmController {
             VmConnection saved = vmService.saveConnection(vmid, connection);
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
+            result.put("id", saved.getId());
             result.put("data", saved);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -213,6 +214,7 @@ public class VmController {
             HostConnection saved = hostService.saveConnection(node, connection);
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
+            result.put("id", saved.getId());
             result.put("data", saved);
             return ResponseEntity.ok(result);
         } catch (Exception e) {

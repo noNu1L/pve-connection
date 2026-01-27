@@ -10,4 +10,4 @@ services:
       java -jar -Xms1024M -XX:MetaspaceSize=1024m  -XX:MaxMetaspaceSize=512m -Xss2m /pve-connection-helper-1.0.jar
     volumes:
       - ./pve-connection-helper-1.0.jar:/pve-connection-helper-1.0.jar
-      - ./pve-connection-helper.db:/pve-connection-helper.db
+      - ./config.json:/config.json

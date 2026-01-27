@@ -27,6 +27,12 @@ public class PveDataService {
         Map<String, Object> result = new HashMap<>();
         try {
             PveClient client = pveClientService.getClient();
+            if (client == null) {
+                result.put("hosts", null);
+                result.put("vms", null);
+                result.put("error", "PVE 客户端未初始化，请先在设置中配置 PVE 连接信息");
+                return result;
+            }
             JsonNode data = client.getCluster().getResources().resources().getData();
 
             List<Map<String, Object>> vms = new ArrayList<>();
