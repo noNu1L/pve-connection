@@ -4,7 +4,6 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.1-green.svg?style=flat-square&logo=spring)](https://spring.io/projects/spring-boot)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D.svg?style=flat-square&logo=vue.js)](https://vuejs.org/)
 [![Element Plus](https://img.shields.io/badge/Element%20Plus-latest-409EFF.svg?style=flat-square)](https://element-plus.org/)
-[![SQLite](https://img.shields.io/badge/SQLite-3-003B57.svg?style=flat-square&logo=sqlite)](https://www.sqlite.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?style=flat-square&logo=docker)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
@@ -53,7 +52,7 @@ services:
       java -jar -Xms1024M -XX:MetaspaceSize=1024m  -XX:MaxMetaspaceSize=512m -Xss2m /pve-connection-helper-1.0.jar
     volumes:
       - ./pve-connection-helper-1.0.jar:/pve-connection-helper-1.0.jar
-      - ./pve-connection-helper.db:/pve-connection-helper.db
+      - ./data:/data
 ```
 
 #### 3. 启动服务
