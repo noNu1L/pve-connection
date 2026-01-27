@@ -69,6 +69,20 @@
             border-radius: 0 !important;
         }
 
+        /* 固定 el-descriptions-item 内容宽度 */
+        .el-descriptions__cell {
+            width: 25%;
+        }
+
+        .el-descriptions__label {
+            width: 80px !important;
+            min-width: 80px !important;
+        }
+
+        .el-descriptions__content {
+            min-width: 120px;
+        }
+
         .header-right {
             margin-left: auto;
             display: flex;
@@ -232,13 +246,13 @@
                         <el-table-column label="名称" width="200px" prop="name">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.name || '-' }}</span>
-                                <el-input v-else v-model="scope.row.name" ></el-input>
+                                <el-input v-else v-model="scope.row.name" @blur="saveConnectionOnBlur(currentItem.node, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="类型" width="100px" prop="connType">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.connType || '-' }}</span>
-                                <el-select v-else v-model="scope.row.connType" placeholder="请选择" @change="handleTypeChange(scope.row)">
+                                <el-select v-else v-model="scope.row.connType" placeholder="请选择" @change="handleTypeChange(scope.row); saveConnectionOnBlur(currentItem.node, scope.row)">
                                     <el-option label="RDP" value="rdp"></el-option>
                                     <el-option label="SSH" value="ssh"></el-option>
                                     <el-option label="SMB" value="smb"></el-option>
@@ -251,7 +265,7 @@
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.address || '-' }}</span>
                                 <el-input v-else v-model="scope.row.address"
-                                          @blur="validateIP(scope.row)"></el-input>
+                                          @blur="validateIP(scope.row); saveConnectionOnBlur(currentItem.node, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="端口" width="100px" prop="port">
@@ -259,13 +273,13 @@
                                 <span v-if="!editMode">{{ scope.row.port || '-' }}</span>
                                 <el-input v-else v-model.number="scope.row.port"
                                           :disabled="scope.row.connType === 'smb'"
-                                          @blur="validatePort(scope.row)"></el-input>
+                                          @blur="validatePort(scope.row); saveConnectionOnBlur(currentItem.node, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="用户名" prop="username">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.username || '-' }}</span>
-                                <el-input v-else v-model="scope.row.username" ></el-input>
+                                <el-input v-else v-model="scope.row.username" @blur="saveConnectionOnBlur(currentItem.node, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="密码" prop="password">
@@ -274,7 +288,7 @@
                                     <span v-if="hoveredRowId === scope.$index">{{ scope.row.password || '-' }}</span>
                                     <span v-else>{{ scope.row.password ? '******' : '-' }}</span>
                                 </span>
-                                <el-input v-else v-model="scope.row.password" ></el-input>
+                                <el-input v-else v-model="scope.row.password" @blur="saveConnectionOnBlur(currentItem.node, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="快捷连接" width="150px">
@@ -294,11 +308,8 @@
                                 <span v-else>-</span>
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="editMode" label="操作" width="200px">
+                        <el-table-column v-if="editMode" label="操作" width="100px">
                             <template #default="scope">
-                                <el-button type="primary"  @click="saveConnection(currentItem.node, scope.row)">
-                                    保存
-                                </el-button>
                                 <el-button type="danger"  @click="confirmDeleteConnection(currentItem.type, scope.row, scope.$index)"
                                            v-if="scope.row.id">删除
                                 </el-button>
@@ -311,6 +322,7 @@
                 <template v-else-if="currentItem">
                     <el-descriptions title="虚拟机信息" :column="4">
                         <el-descriptions-item label="虚拟机ID">{{ currentItem.vmid }}</el-descriptions-item>
+                        <el-descriptions-item label="虚拟机名称">{{ currentItem.name }}</el-descriptions-item>
                         <el-descriptions-item label="节点">{{ currentItem.node }}</el-descriptions-item>
                         <el-descriptions-item label="类型">{{ currentItem.type === 'qemu' ? 'KVM' : 'LXC' }}
                         </el-descriptions-item>
@@ -366,13 +378,13 @@
                         <el-table-column label="名称" width="200px" prop="name">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.name || '-' }}</span>
-                                <el-input v-else v-model="scope.row.name" ></el-input>
+                                <el-input v-else v-model="scope.row.name" @blur="saveConnectionOnBlur(currentItem.vmid, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="类型" width="100px" prop="connType">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.connType || '-' }}</span>
-                                <el-select v-else v-model="scope.row.connType" placeholder="请选择" @change="handleTypeChange(scope.row)">
+                                <el-select v-else v-model="scope.row.connType" placeholder="请选择" @change="handleTypeChange(scope.row); saveConnectionOnBlur(currentItem.vmid, scope.row)">
                                     <el-option label="RDP" value="rdp"></el-option>
                                     <el-option label="SSH" value="ssh"></el-option>
                                     <el-option label="SMB" value="smb"></el-option>
@@ -385,7 +397,7 @@
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.address || '-' }}</span>
                                 <el-input v-else v-model="scope.row.address"
-                                          @blur="validateIP(scope.row)"></el-input>
+                                          @blur="validateIP(scope.row); saveConnectionOnBlur(currentItem.vmid, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="端口" width="100px" prop="port">
@@ -393,13 +405,13 @@
                                 <span v-if="!editMode">{{ scope.row.port || '-' }}</span>
                                 <el-input v-else v-model.number="scope.row.port"
                                           :disabled="scope.row.connType === 'smb'"
-                                          @blur="validatePort(scope.row)"></el-input>
+                                          @blur="validatePort(scope.row); saveConnectionOnBlur(currentItem.vmid, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="用户名" prop="username">
                             <template #default="scope">
                                 <span v-if="!editMode">{{ scope.row.username || '-' }}</span>
-                                <el-input v-else v-model="scope.row.username" ></el-input>
+                                <el-input v-else v-model="scope.row.username" @blur="saveConnectionOnBlur(currentItem.vmid, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="密码" prop="password">
@@ -408,7 +420,7 @@
                                     <span v-if="hoveredRowId === scope.$index">{{ scope.row.password || '-' }}</span>
                                     <span v-else>{{ scope.row.password ? '******' : '-' }}</span>
                                 </span>
-                                <el-input v-else v-model="scope.row.password" ></el-input>
+                                <el-input v-else v-model="scope.row.password" @blur="saveConnectionOnBlur(currentItem.vmid, scope.row)"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column label="快捷连接" width="150px">
@@ -428,11 +440,8 @@
                                 <span v-else>-</span>
                             </template>
                         </el-table-column>
-                        <el-table-column v-if="editMode" label="操作" width="200px">
+                        <el-table-column v-if="editMode" label="操作" width="100px">
                             <template #default="scope">
-                                <el-button type="primary"  @click="saveConnection(currentItem.vmid, scope.row)">
-                                    保存
-                                </el-button>
                                 <el-button type="danger"  @click="confirmDeleteConnection(currentItem.type, scope.row, scope.$index)"
                                            v-if="scope.row.id">删除
                                 </el-button>
@@ -679,6 +688,31 @@
                     }
                 } catch (error) {
                     ElMessage.error('保存失败');
+                }
+            };
+
+            // 失焦自动保存连接信息（静默保存，不频繁提示）
+            const saveConnectionOnBlur = async (id, connection) => {
+                if (!editMode.value) return;
+                // 必须选择连接类型才能保存
+                if (!connection.connType) return;
+
+                const type = typeof id === 'string' ? 'host' : 'vm';
+                const url = type === 'host' ? `/api/host/${id}/connections` : `/api/vm/${id}/connections`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(connection)
+                    });
+                    const result = await response.json();
+                    if (result.success && result.id && !connection.id) {
+                        // 新建连接时，更新本地连接的id
+                        connection.id = result.id;
+                    }
+                } catch (error) {
+                    console.error('自动保存失败', error);
                 }
             };
 
@@ -1020,6 +1054,7 @@ ${connection.username ? 'username:s:' + connection.username : ''}`;
                 validateIP,
                 validatePort,
                 saveConnection,
+                saveConnectionOnBlur,
                 confirmDeleteConnection,
                 deleteConnection,
                 downloadRDP,
