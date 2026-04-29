@@ -23,18 +23,12 @@ public class ConfigController {
     private final PveClientService pveClientService;
 
     /**
-     * 获取所有配置（密码字段脱敏）
+     * 获取所有配置
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllConfig() {
         try {
             Map<String, String> configs = configService.getAllConfig();
-
-            // 密码脱敏
-            if (configs.containsKey(ConfigService.KEY_PVE_PASSWORD) &&
-                !configs.get(ConfigService.KEY_PVE_PASSWORD).isEmpty()) {
-                configs.put(ConfigService.KEY_PVE_PASSWORD, "******");
-            }
 
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
