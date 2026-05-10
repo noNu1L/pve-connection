@@ -2,6 +2,9 @@
 
 Proxmox VE 连接管理工具，统一展示节点与虚拟机信息，支持一键生成 RDP / SSH / SMB 连接文件。
 
+
+![img.png](https://github.com/noNu1L/pve-connection-helper/blob/main/document/images/v2.0.png?raw=true)
+
 ## 功能
 
 - **说明** — 为节点或虚拟机添加自定义说明
