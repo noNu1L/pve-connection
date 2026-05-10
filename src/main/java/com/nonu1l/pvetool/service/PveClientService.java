@@ -2,6 +2,7 @@ package com.nonu1l.pvetool.service;
 
 import it.corsinvest.proxmoxve.api.PveClient;
 import it.corsinvest.proxmoxve.api.PveExceptionAuthentication;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class PveClientService {
      * 初始化 PVE 客户端
      * 从数据库读取配置
      */
+    @PostConstruct
     public void init() {
         Map<String, String> pveConfig = configService.getPveConfig();
 

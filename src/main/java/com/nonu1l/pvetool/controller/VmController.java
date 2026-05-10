@@ -31,15 +31,6 @@ public class VmController {
     private final HostService hostService;
 
     /**
-     * 首页
-     */
-    @GetMapping("/")
-    public String index() {
-        pveClientService.init();
-        return "index";
-    }
-
-    /**
      * 获取所有虚拟机和宿主机数据
      */
     @GetMapping("/api/data")

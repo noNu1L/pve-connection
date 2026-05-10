@@ -1,0 +1,89 @@
+/* Layout */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Sidebar scroll area */
+.sidebar-scroll {
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Detail panel scroll */
+.detail-scroll {
+  overflow-y: auto;
+  height: 100%;
+  padding: 20px 24px;
+}
+
+/* Menu overrides */
+.menu-list a.is-active {
+  background-color: #485fc7;
+}
+
+/* Switch-toggle (Bulma doesn't provide one) */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-toggle .slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: .3s;
+  border-radius: 24px;
+}
+.switch-toggle .slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+.switch-toggle input:checked + .slider {
+  background-color: #485fc7;
+}
+.switch-toggle input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* Section title */
+.section-heading {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 24px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Password column hover reveal */
+.password-cell {
+  cursor: default;
+}
+
+/* Connection table actions */
+.conn-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Ensure table wrapper scrolls */
+.table-wrapper {
+  overflow-x: auto;
+}
