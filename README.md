@@ -4,11 +4,9 @@ Proxmox VE 连接管理工具，统一展示节点与虚拟机信息，支持一
 
 ## 功能
 
-- **节点与虚拟机概览** — 实时查看 CPU、内存、磁盘、运行时长、标签
-- **存储信息** — 宿主机存储池用量一目了然
-- **快速连接** — 一键下载 RDP、SSH (Xshell)、SMB 连接脚本，或打开 Web 链接
-- **说明与备注** — 为任意节点或虚拟机添加说明
+- **说明** — 为节点或虚拟机添加自定义说明
 - **连接凭据管理** — 集中管理各连接类型的用户名、密码、端口
+- **快速连接** — 一键下载 RDP、SSH (Xshell)、SMB 连接脚本，或打开 Web 链接
 
 ## 项目结构
 
@@ -44,17 +42,24 @@ docker compose up -d
 
 ## 开发
 
-```bash
-# 后端 (需要 JDK 17 + Maven)
-mvn clean package -DskipTests
+`src/main/resources/static/` 为前端构建产物，不纳入版本控制，**Maven 打包前需先在本地构建前端**。
 
-# 前端 (需要 Node.js 18+)
+```bash
+# 1. 构建前端 (需要 Node.js 18+)
 cd frontend
 npm install
-npm run dev        # 开发模式，代理到 localhost:8080
-npm run build      # 构建到 ../src/main/resources/static
+npm run build      # 输出到 ../src/main/resources/static/
+
+# 2. 打包后端 (需要 JDK 17 + Maven)
+cd ..
+mvn clean package -DskipTests
+# 产物: target/pve-connection.jar
 ```
 
-## 许可
+前端开发模式（需后端同时运行在 8080 端口）：
 
-MIT
+```bash
+cd frontend
+npm run dev
+```
+
