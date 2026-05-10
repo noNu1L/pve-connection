@@ -34,14 +34,13 @@ pve-connection/
 
 ## Docker 部署
 
-准备 `docker-compose/` 目录，放入 `pve-connection.jar`，然后启动：
-
 ```bash
-cd docker-compose
-docker compose up -d
+docker run -d --name pve-connection --restart unless-stopped youmiepie/pve-connection:latest
 ```
 
-浏览器访问 `http://your-server-ip:80`
+浏览器访问 `http://your-server-ip:8080`
+
+配置持久化及端口映射参考`docker-compose/docker-compose.yaml`
 
 ## 开发
 
