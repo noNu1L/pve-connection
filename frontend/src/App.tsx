@@ -11,27 +11,23 @@ function AppBody() {
   const { allItems, errorMessage } = useApp();
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="app-shell">
       <Header />
 
       {errorMessage && (
-        <div className="notification is-danger m-3 mb-0">
-          {errorMessage}
-        </div>
+        <div className="pve-error">{errorMessage}</div>
       )}
 
       {!errorMessage && allItems.length === 0 && (
-        <div className="section has-text-centered">
-          <p className="has-text-grey">暂无数据</p>
-        </div>
+        <div className="pve-empty">暂无数据</div>
       )}
 
       {!errorMessage && allItems.length > 0 && (
-        <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-          <div style={{ width: 280, borderRight: '1px solid #e4e7ed', flexShrink: 0 }} className="sidebar-scroll">
+        <div className="app-body">
+          <div className="sidebar-col">
             <Sidebar />
           </div>
-          <div style={{ flex: 1 }} className="detail-scroll">
+          <div className="detail-col">
             <DetailPanel />
           </div>
         </div>

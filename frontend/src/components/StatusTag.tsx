@@ -1,15 +1,17 @@
 interface Props {
   status: string;
+  showText?: boolean;
 }
 
 const RUNNING = new Set(['running', 'online', 'active', 'available']);
+const STOPPED = new Set(['stopped', 'inactive']);
 
-export default function StatusTag({ status }: Props) {
-  if (RUNNING.has(status)) {
-    return <span className="tag is-success">{status}</span>;
-  }
-  if (status === 'stopped' || status === 'inactive') {
-    return <span className="tag is-info">{status}</span>;
-  }
-  return <span className="tag is-danger">{status}</span>;
+export default function StatusTag({ status, showText = true }: Props) {
+  const cls = RUNNING.has(status) ? status : STOPPED.has(status) ? 'stopped' : 'error';
+  return (
+    <span className={`status-dot ${cls}`}>
+      <span className="status-dot-circle" />
+      {showText && <span className="status-dot-text">{status}</span>}
+    </span>
+  );
 }

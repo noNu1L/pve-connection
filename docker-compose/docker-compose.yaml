@@ -1,13 +1,15 @@
 version: '3'
 services:
-  pve-connection-helper:
+  pve-connection:
     image: eclipse-temurin:17-jre-jammy
-    container_name: pve-connection-helper
+    container_name: pve-connection
     restart: unless-stopped
     ports:
       - "80:8080"
+    environment:
+      - APP_DATA_DIR=/data
     entrypoint:
-      java -jar -Xms1024M -XX:MetaspaceSize=1024m  -XX:MaxMetaspaceSize=512m -Xss2m /pve-connection-helper-1.0.jar
+      java -jar -Xms1024M -XX:MetaspaceSize=1024m  -XX:MaxMetaspaceSize=512m -Xss2m /pve-connection.jar
     volumes:
-      - ./pve-connection-helper-1.0.jar:/pve-connection-helper-1.0.jar
+      - ./pve-connection.jar:/pve-connection.jar
       - ./data:/data

@@ -1,5 +1,5 @@
 {
-  "name": "pve-connection-helper",
+  "name": "pve-connection",
   "private": true,
   "version": "1.0.0",
   "type": "module",

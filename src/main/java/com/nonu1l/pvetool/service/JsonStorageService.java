@@ -6,6 +6,7 @@ import com.nonu1l.pvetool.model.HostConnection;
 import com.nonu1l.pvetool.model.StorageData;
 import com.nonu1l.pvetool.model.VmConnection;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -18,19 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class JsonStorageService {
 
-    private static final String CONFIG_DIR = "data";
     private static final String CONFIG_FILE = "config.json";
     private final ObjectMapper objectMapper;
     private StorageData data;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final File configFile;
 
-    public JsonStorageService() {
+    public JsonStorageService(@Value("${app.data-dir:data}") String configDir) {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         // 确保 data 目录存在
-        File dataDir = new File(CONFIG_DIR);
+        File dataDir = new File(configDir);
         if (!dataDir.exists()) {
             dataDir.mkdirs();
         }

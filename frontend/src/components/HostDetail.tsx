@@ -1,9 +1,53 @@
+import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context';
 import type { HostItem } from '../types';
 import StatusTag from './StatusTag';
 import StorageTable from './StorageTable';
 import ExplainSection from './ExplainSection';
 import ConnectionTable from './ConnectionTable';
+
+const COLLAPSED_HEIGHT = 120;
+
+function DescriptionBox({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const [overflows, setOverflows] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) setOverflows(ref.current.scrollHeight > COLLAPSED_HEIGHT);
+    setExpanded(false);
+  }, [text]);
+
+  return (
+    <div>
+      <div className="section-heading">备注</div>
+      <div
+        ref={ref}
+        className="explain-box"
+        style={{
+          maxHeight: expanded || !overflows ? 'none' : COLLAPSED_HEIGHT,
+          overflow: 'hidden',
+          position: 'relative',
+          borderRadius: overflows ? 'var(--radius) var(--radius) 0 0' : 'var(--radius)',
+        }}
+      >
+        {text}
+        {overflows && !expanded && (
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: 36,
+            background: 'linear-gradient(transparent, var(--bg-surface))',
+            pointerEvents: 'none',
+          }} />
+        )}
+      </div>
+      {overflows && (
+        <button className="explain-toggle" onClick={() => setExpanded(v => !v)}>
+          {expanded ? '收起 ↑' : '展开 ↓'}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default function HostDetail() {
   const { selectedItem } = useApp();
@@ -12,39 +56,34 @@ export default function HostDetail() {
 
   return (
     <div>
-      <h3 className="title is-5">宿主机信息</h3>
-      <table className="table is-bordered is-fullwidth">
-        <tbody>
-          <tr>
-            <th style={{ width: 120 }}>节点名称</th>
-            <td>{host.node}</td>
-            <th style={{ width: 120 }}>状态</th>
-            <td><StatusTag status={host.status} /></td>
-          </tr>
-          <tr>
-            <th>CPU核心数</th>
-            <td>{host.cpus} 核</td>
-            <th>CPU使用率</th>
-            <td>{host.cpuUsageFormatted}</td>
-          </tr>
-          <tr>
-            <th>内存使用</th>
-            <td>{host.memFormatted} / {host.maxmemFormatted} GB</td>
-            <th>内存使用率</th>
-            <td>{host.memUsageFormatted}</td>
-          </tr>
-          <tr>
-            <th>运行时长</th>
-            <td colSpan={3}>{host.uptimeFormatted}</td>
-          </tr>
-          <tr>
-            <th>备注</th>
-            <td colSpan={3}>{host.description || '-'}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="detail-header">
+        <div>
+          <h1 className="detail-title">{host.node}</h1>
+          <div className="detail-subtitle">宿主机节点</div>
+        </div>
+        <StatusTag status={host.status} />
+      </div>
 
-      <h4 className="section-heading">存储信息</h4>
+      <div className="stat-grid">
+        <div className="stat-card">
+          <div className="stat-label">CPU 核心</div>
+          <div className="stat-value">{host.cpus}</div>
+          <div className="stat-sub">使用率 {host.cpuUsageFormatted}</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">内存</div>
+          <div className="stat-value">{host.memFormatted} <span style={{fontSize:13,color:'var(--text-muted)'}}>GB</span></div>
+          <div className="stat-sub">/ {host.maxmemFormatted} GB · {host.memUsageFormatted}</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">运行时长</div>
+          <div className="stat-value" style={{fontSize:15, fontFamily:'var(--font-body)'}}>{host.uptimeFormatted}</div>
+        </div>
+      </div>
+
+      {host.description && <DescriptionBox text={host.description} />}
+
+      <div className="section-heading">存储信息</div>
       <StorageTable storages={host.storages} />
 
       <ExplainSection />

@@ -5,24 +5,19 @@ export default function ConfirmDialog() {
   if (!confirmDialog) return null;
 
   return (
-    <div className="modal is-active">
-      <div className="modal-background" onClick={hideConfirm} />
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <p className="modal-card-title">提示</p>
-        </header>
-        <section className="modal-card-body">
-          <p>{confirmDialog.message}</p>
-        </section>
-        <footer className="modal-card-foot" style={{ justifyContent: 'flex-end', gap: 8 }}>
-          <button className="button" onClick={hideConfirm}>取消</button>
-          <button
-            className="button is-warning"
-            onClick={() => { confirmDialog.onConfirm(); }}
-          >
-            确定
-          </button>
-        </footer>
+    <div className="pve-modal-bg" onClick={hideConfirm}>
+      <div className="pve-modal" style={{maxWidth:400}} onClick={e => e.stopPropagation()}>
+        <div className="pve-modal-head">
+          <span className="pve-modal-title">确认操作</span>
+          <button className="pve-modal-close" onClick={hideConfirm}>✕</button>
+        </div>
+        <div className="pve-modal-body">
+          <p style={{color:'var(--text-secondary)',fontSize:14}}>{confirmDialog.message}</p>
+        </div>
+        <div className="pve-modal-foot">
+          <button className="btn btn-ghost" onClick={hideConfirm}>取消</button>
+          <button className="btn btn-warning" onClick={() => { confirmDialog.onConfirm(); }}>确定</button>
+        </div>
       </div>
     </div>
   );

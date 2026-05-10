@@ -1,78 +1,64 @@
 import { useApp } from '../context';
-import type { AllItem, HostItem, VmItem } from '../types';
+import type { HostItem, VmItem } from '../types';
 import StatusTag from './StatusTag';
 
-function getItemKey(item: AllItem): string {
-  return item.type === 'host' ? `host-${item.node}` : String(item.vmid);
-}
-
-function getItemTitle(item: AllItem): string {
-  return item.type === 'host' ? item.node : item.name;
-}
-
-function getItemStatus(item: AllItem): string {
-  if (item.type === 'host') return item.status;
-  return item.status;
-}
-
 export default function Sidebar() {
-  const { hosts, vms, allItems, activeTab, showDescription, selectItem } = useApp();
+  const { hosts, vms, activeTab, showDescription, selectItem } = useApp();
 
   return (
-    <aside className="menu px-0" style={{ overflowY: 'auto' }}>
+    <nav style={{ paddingTop: 8, paddingBottom: 16 }}>
       {hosts.length > 0 && (
         <>
-          <p className="menu-label" style={{ paddingLeft: 12 }}>宿主机</p>
-          <ul className="menu-list">
-            {hosts.map(item => (
-              <li key={`host-${(item as HostItem).node}`}>
-                <a
-                  className={activeTab === `host-${(item as HostItem).node}` ? 'is-active' : ''}
-                  onClick={() => selectItem(`host-${(item as HostItem).node}`)}
-                  style={{ padding: '8px 12px' }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span className="has-text-weight-medium">{(item as HostItem).node}</span>
-                    <StatusTag status={item.status} />
+          <div className="sidebar-section-label">宿主机</div>
+          {hosts.map(item => {
+            const key = `host-${(item as HostItem).node}`;
+            return (
+              <div
+                key={key}
+                className={`sidebar-item ${activeTab === key ? 'active' : ''}`}
+                onClick={() => selectItem(key)}
+              >
+                <div className="sidebar-item-inner">
+                  <div className="sidebar-item-row">
+                    <span className="sidebar-item-name">{(item as HostItem).node}</span>
+                    <StatusTag status={item.status} showText={false} />
                   </div>
                   {showDescription && item.description && (
-                    <div className="is-size-7 mt-1" style={{ color: '#909399' }}>
-                      {item.description}
-                    </div>
+                    <div className="sidebar-item-desc">{item.description}</div>
                   )}
-                </a>
-              </li>
-            ))}
-          </ul>
+                </div>
+              </div>
+            );
+          })}
         </>
       )}
 
       {vms.length > 0 && (
         <>
-          <p className="menu-label" style={{ paddingLeft: 12 }}>虚拟机</p>
-          <ul className="menu-list">
-            {vms.map(item => (
-              <li key={String((item as VmItem).vmid)}>
-                <a
-                  className={activeTab === String((item as VmItem).vmid) ? 'is-active' : ''}
-                  onClick={() => selectItem(String((item as VmItem).vmid))}
-                  style={{ padding: '8px 12px' }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span className="has-text-weight-medium">{item.name}</span>
-                    <StatusTag status={item.status} />
+          <div className="sidebar-section-label" style={{ marginTop: hosts.length > 0 ? 8 : 0 }}>虚拟机</div>
+          {vms.map(item => {
+            const vm = item as VmItem;
+            const key = String(vm.vmid);
+            return (
+              <div
+                key={key}
+                className={`sidebar-item ${activeTab === key ? 'active' : ''}`}
+                onClick={() => selectItem(key)}
+              >
+                <div className="sidebar-item-inner">
+                  <div className="sidebar-item-row">
+                    <span className="sidebar-item-name">{vm.name}</span>
+                    <StatusTag status={vm.status} showText={false} />
                   </div>
-                  {showDescription && item.description && (
-                    <div className="is-size-7 mt-1" style={{ color: '#909399' }}>
-                      {item.description}
-                    </div>
+                  {showDescription && vm.description && (
+                    <div className="sidebar-item-desc">{vm.description}</div>
                   )}
-                </a>
-              </li>
-            ))}
-          </ul>
+                </div>
+              </div>
+            );
+          })}
         </>
       )}
-    </aside>
+    </nav>
   );
 }
