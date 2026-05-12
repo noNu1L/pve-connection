@@ -34,6 +34,21 @@ public class PveDataService {
                 return result;
             }
             JsonNode data = client.getCluster().getResources().resources().getData();
+            // Ticket 过期时返回 null，重新登录后重试一次
+            if (data == null) {
+                log.warn("PVE 会话可能已过期，尝试重新登录");
+                pveClientService.reinit();
+                client = pveClientService.getClient();
+                if (client != null) {
+                    data = client.getCluster().getResources().resources().getData();
+                }
+            }
+            if (data == null) {
+                result.put("hosts", null);
+                result.put("vms", null);
+                result.put("error", "无法获取 PVE 数据，请检查连接配置");
+                return result;
+            }
 
             List<Map<String, Object>> vms = new ArrayList<>();
             Map<String, Map<String, Object>> hostsMap = new HashMap<>();
