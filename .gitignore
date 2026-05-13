@@ -46,3 +46,5 @@ build/
 /data/config.json
 /frontend/node_modules
 /src/main/resources/static/
+/node_modules
+/frontend/.vite
