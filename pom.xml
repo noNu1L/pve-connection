@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.nonu1l</groupId>
     <artifactId>pve-connection</artifactId>
-    <version>2.0</version>
+    <version>2.1.0</version>
     <name>pve-connection</name>
     <description>PVE Connection - Proxmox VE Connection Management Tool</description>
     <url/>
