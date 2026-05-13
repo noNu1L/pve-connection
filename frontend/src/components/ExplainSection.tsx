@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useApp } from '../context';
 
 const COLLAPSED_HEIGHT = 120;
@@ -13,7 +15,6 @@ export default function ExplainSection() {
     if (contentRef.current) {
       setOverflows(contentRef.current.scrollHeight > COLLAPSED_HEIGHT);
     }
-    // 切换内容时收起
     setExpanded(false);
   }, [currentExplain]);
 
@@ -43,7 +44,7 @@ export default function ExplainSection() {
               borderRadius: overflows ? 'var(--radius) var(--radius) 0 0' : 'var(--radius)',
             }}
           >
-            {currentExplain}
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentExplain}</ReactMarkdown>
             {overflows && !expanded && (
               <div style={{
                 position: 'absolute',

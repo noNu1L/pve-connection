@@ -755,6 +755,95 @@ table.pve-table .mono {
   color: var(--accent);
 }
 
+/* === Markdown Content === */
+.explain-box h1, .explain-box h2, .explain-box h3,
+.explain-box h4, .explain-box h5, .explain-box h6 {
+  margin: 12px 0 4px;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.explain-box h1:first-child, .explain-box h2:first-child,
+.explain-box h3:first-child, .explain-box h4:first-child {
+  margin-top: 0;
+}
+.explain-box h1 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.explain-box h2 { font-size: 1.3em; }
+.explain-box h3 { font-size: 1.15em; }
+.explain-box h4 { font-size: 1.05em; }
+
+.explain-box p { margin: 0; }
+
+.explain-box p + p { margin-top: 6px; }
+
+.explain-box ul, .explain-box ol { margin: 4px 0; padding-left: 20px; }
+.explain-box li { margin: 1px 0; }
+
+.explain-box code {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+.explain-box pre {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  overflow-x: auto;
+  margin: 4px 0;
+}
+.explain-box pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.explain-box table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 12px;
+}
+.explain-box th, .explain-box td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}
+.explain-box th {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.explain-box a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.explain-box a:hover { color: #f0c860; }
+
+.explain-box blockquote {
+  border-left: 3px solid var(--accent);
+  margin: 8px 0;
+  padding: 4px 12px;
+  color: var(--text-muted);
+  background: rgba(230,180,80,0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.explain-box hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 14px 0;
+}
+
+.explain-box img { max-width: 100%; border-radius: var(--radius); }
+
 /* === Error / Empty === */
 .pve-error {
   margin: 16px;
